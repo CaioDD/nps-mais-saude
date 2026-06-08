@@ -47,9 +47,15 @@ export default async function FilialPage({ params }: Props) {
 
           {/* Logo */}
           <div className="flex justify-center mb-8">
-            <div className="bg-white rounded-3xl shadow-2xl px-10 py-7 ring-1 ring-white/60">
-              <Image src="/logo.jpg" alt="Laboratório Mais Saúde" width={240} height={140} className="object-contain" priority />
-            </div>
+            <Image
+              src="/logo.jpg"
+              alt="Laboratório Mais Saúde"
+              width={260}
+              height={150}
+              className="object-contain"
+              style={{ mixBlendMode: 'multiply' }}
+              priority
+            />
           </div>
 
           {/* Card do formulário */}
