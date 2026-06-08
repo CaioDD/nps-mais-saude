@@ -38,18 +38,22 @@ export default function Home() {
       <div className="relative z-10 flex-1 flex flex-col py-8 px-4 sm:py-12">
         <div className="max-w-lg mx-auto w-full">
 
-          {/* Logo */}
+          {/* Logo — background-blend-mode elimina o fundo branco sem depender de stacking context */}
           <div className="flex justify-center mb-8">
-            <div style={{ mixBlendMode: 'multiply', background: 'white', borderRadius: '16px', padding: '8px' }}>
-              <Image
-                src="/logo.png"
-                alt="Laboratório Mais Saúde"
-                width={260}
-                height={160}
-                className="object-contain"
-                priority
-              />
-            </div>
+            <div
+              style={{
+                width: '280px',
+                height: '165px',
+                backgroundImage: 'url(/logo.jpg)',
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                backgroundBlendMode: 'multiply',
+                backgroundColor: '#3d95a8',
+              }}
+              role="img"
+              aria-label="Laboratório Mais Saúde"
+            />
           </div>
 
           {/* Card do formulário */}
