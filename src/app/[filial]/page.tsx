@@ -52,7 +52,7 @@ export default async function FilialPage({ params }: Props) {
                 width: '300px',
                 height: '180px',
                 backgroundImage: 'url(/logo.jpg)',
-                backgroundSize: '92%',
+                backgroundSize: '115%',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
                 backgroundColor: 'white',
