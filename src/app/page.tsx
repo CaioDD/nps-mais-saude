@@ -38,18 +38,19 @@ export default function Home() {
       <div className="relative z-10 flex-1 flex flex-col py-8 px-4 sm:py-12">
         <div className="max-w-lg mx-auto w-full">
 
-          {/* Logo — background-blend-mode elimina o fundo branco sem depender de stacking context */}
+          {/* Logo */}
           <div className="flex justify-center mb-8">
             <div
               style={{
-                width: '280px',
-                height: '165px',
+                width: '300px',
+                height: '180px',
                 backgroundImage: 'url(/logo.jpg)',
-                backgroundSize: 'contain',
+                backgroundSize: '92%',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                backgroundBlendMode: 'multiply',
-                backgroundColor: '#7ecad8',
+                backgroundColor: 'white',
+                borderRadius: '20px',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
               }}
               role="img"
               aria-label="Laboratório Mais Saúde"

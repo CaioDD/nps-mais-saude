@@ -49,14 +49,15 @@ export default async function FilialPage({ params }: Props) {
           <div className="flex flex-col items-center mb-8">
             <div
               style={{
-                width: '280px',
-                height: '165px',
+                width: '300px',
+                height: '180px',
                 backgroundImage: 'url(/logo.jpg)',
-                backgroundSize: 'contain',
+                backgroundSize: '92%',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                backgroundBlendMode: 'multiply',
-                backgroundColor: '#7ecad8',
+                backgroundColor: 'white',
+                borderRadius: '20px',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
               }}
               role="img"
               aria-label="Laboratório Mais Saúde"
