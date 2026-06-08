@@ -56,7 +56,7 @@ export default async function FilialPage({ params }: Props) {
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
                 backgroundBlendMode: 'multiply',
-                backgroundColor: '#3d95a8',
+                backgroundColor: '#7ecad8',
               }}
               role="img"
               aria-label="Laboratório Mais Saúde"
