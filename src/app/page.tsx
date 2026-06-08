@@ -1,5 +1,6 @@
 import NpsForm from "@/components/nps-form";
 import Image from "next/image";
+import PageBackground from "@/components/page-background";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,51 +13,10 @@ export default function Home() {
     <div
       className="min-h-screen relative overflow-hidden flex flex-col"
       style={{
-        background: "linear-gradient(155deg, #005A50 0%, #00695C 45%, #004039 100%)",
+        background: "linear-gradient(168deg, #4aa6b8 0%, #267585 22%, #1a5264 48%, #10303e 72%, #091c28 100%)",
       }}
     >
-      {/* Forma orgânica 1 — pílula vertical, topo centro */}
-      <div
-        aria-hidden="true"
-        className="absolute pointer-events-none"
-        style={{
-          top: "-12%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "130px",
-          height: "260px",
-          borderRadius: "50%",
-          background: "rgba(0, 121, 107, 0.40)",
-        }}
-      />
-
-      {/* Forma orgânica 2 — arco grande canto inferior esquerdo */}
-      <div
-        aria-hidden="true"
-        className="absolute pointer-events-none"
-        style={{
-          bottom: "-18%",
-          left: "-14%",
-          width: "320px",
-          height: "320px",
-          borderRadius: "62% 38% 46% 54% / 60% 44% 56% 40%",
-          background: "rgba(0, 42, 36, 0.45)",
-        }}
-      />
-
-      {/* Forma orgânica 3 — blob sutil canto superior direito */}
-      <div
-        aria-hidden="true"
-        className="absolute pointer-events-none"
-        style={{
-          top: "8%",
-          right: "-10%",
-          width: "200px",
-          height: "200px",
-          borderRadius: "40% 60% 55% 45% / 50% 40% 60% 50%",
-          background: "rgba(0, 77, 64, 0.35)",
-        }}
-      />
+      <PageBackground />
 
       {/* Logo grande ao fundo — marca d'água */}
       <div
