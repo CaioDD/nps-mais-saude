@@ -38,25 +38,18 @@ export default function Home() {
       <div className="relative z-10 flex-1 flex flex-col py-8 px-4 sm:py-12">
         <div className="max-w-lg mx-auto w-full">
 
-          {/* Logo e identidade */}
+          {/* Logo */}
           <div className="flex flex-col items-center mb-7">
-            {/* Caixinha — apenas a logo */}
-            <div className="w-20 h-20 rounded-3xl bg-white/15 backdrop-blur-sm flex items-center justify-center ring-1 ring-white/25 shadow-xl">
+            <div className="w-24 h-24 rounded-3xl bg-white/15 backdrop-blur-sm flex items-center justify-center ring-1 ring-white/25 shadow-xl">
               <Image
                 src="/logo.jpg"
                 alt="Logo Mais Saúde"
-                width={54}
-                height={54}
+                width={72}
+                height={72}
                 className="rounded-2xl object-contain"
                 priority
               />
             </div>
-            <h1 className="mt-4 text-white font-black text-lg sm:text-xl uppercase tracking-tight text-center leading-snug drop-shadow">
-              Clínica e Laboratório<br />Mais Saúde
-            </h1>
-            <p className="mt-1.5 text-white/60 text-sm text-center">
-              Sua opinião nos ajuda a melhorar sempre.
-            </p>
           </div>
 
           {/* Card do formulário */}
