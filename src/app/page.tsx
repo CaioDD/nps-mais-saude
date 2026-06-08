@@ -44,15 +44,18 @@ export default function Home() {
               className="rounded-3xl px-10 py-6"
               style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(6px)' }}
             >
-              <Image
-                src="/logo.jpg"
-                alt="Laboratório Mais Saúde"
-                width={220}
-                height={130}
-                className="object-contain"
-                style={{ mixBlendMode: 'darken' }}
-                priority
-              />
+              {/* overflow hidden corta o "de Pinheiro" do fundo da imagem */}
+              <div style={{ overflow: 'hidden', height: '100px', width: '220px' }}>
+                <Image
+                  src="/logo.jpg"
+                  alt="Laboratório Mais Saúde"
+                  width={220}
+                  height={130}
+                  className="object-cover object-top"
+                  style={{ mixBlendMode: 'darken' }}
+                  priority
+                />
+              </div>
             </div>
           </div>
 
