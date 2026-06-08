@@ -40,15 +40,16 @@ export default function Home() {
 
           {/* Logo */}
           <div className="flex justify-center mb-8">
-            <Image
-              src="/logo.png"
-              alt="Laboratório Mais Saúde"
-              width={260}
-              height={160}
-              className="object-contain"
-              style={{ mixBlendMode: 'multiply', filter: 'brightness(2.2) saturate(1.5)' }}
-              priority
-            />
+            <div style={{ mixBlendMode: 'multiply', background: 'white', borderRadius: '16px', padding: '8px' }}>
+              <Image
+                src="/logo.png"
+                alt="Laboratório Mais Saúde"
+                width={260}
+                height={160}
+                className="object-contain"
+                priority
+              />
+            </div>
           </div>
 
           {/* Card do formulário */}
