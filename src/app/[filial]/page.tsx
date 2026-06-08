@@ -46,16 +46,21 @@ export default async function FilialPage({ params }: Props) {
         <div className="max-w-lg mx-auto w-full">
 
           {/* Logo */}
-          <div className="flex justify-center mb-8">
-            <Image
-              src="/logo.jpg"
-              alt="Laboratório Mais Saúde"
-              width={260}
-              height={150}
-              className="object-contain"
-              style={{ mixBlendMode: 'multiply' }}
-              priority
-            />
+          <div className="flex flex-col items-center mb-8">
+            <div className="bg-white rounded-3xl shadow-2xl px-10 py-7">
+              <Image
+                src="/logo.jpg"
+                alt="Laboratório Mais Saúde"
+                width={220}
+                height={130}
+                className="object-contain"
+                priority
+              />
+            </div>
+            {/* Badge da filial */}
+            <span className="mt-4 px-4 py-1.5 rounded-full bg-white/20 text-white text-xs font-semibold tracking-wide">
+              Unidade {nomeFilial}
+            </span>
           </div>
 
           {/* Card do formulário */}
