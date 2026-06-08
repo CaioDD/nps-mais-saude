@@ -52,8 +52,7 @@ export default async function FilialPage({ params }: Props) {
               alt="Laboratório Mais Saúde"
               width={260}
               height={160}
-              className="object-contain"
-              style={{ mixBlendMode: 'multiply', filter: 'brightness(1.6) saturate(1.4)' }}
+              className="object-contain drop-shadow-lg"
               priority
             />
             {/* Badge da filial */}
