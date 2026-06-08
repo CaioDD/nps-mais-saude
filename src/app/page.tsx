@@ -39,14 +39,14 @@ export default function Home() {
         <div className="max-w-lg mx-auto w-full">
 
           {/* Logo */}
-          <div className="flex flex-col items-center mb-7">
-            <div className="w-24 h-24 rounded-3xl bg-white/15 backdrop-blur-sm flex items-center justify-center ring-1 ring-white/25 shadow-xl">
+          <div className="flex justify-center mb-8">
+            <div className="bg-white rounded-3xl shadow-2xl px-10 py-7 ring-1 ring-white/60">
               <Image
                 src="/logo.jpg"
-                alt="Logo Mais Saúde"
-                width={72}
-                height={72}
-                className="rounded-2xl object-contain"
+                alt="Laboratório Mais Saúde"
+                width={240}
+                height={140}
+                className="object-contain"
                 priority
               />
             </div>
