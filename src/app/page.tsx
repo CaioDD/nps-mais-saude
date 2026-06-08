@@ -45,7 +45,8 @@ export default function Home() {
               alt="Laboratório Mais Saúde"
               width={260}
               height={160}
-              className="object-contain drop-shadow-lg"
+              className="object-contain"
+              style={{ mixBlendMode: 'multiply', filter: 'brightness(2.2) saturate(1.5)' }}
               priority
             />
           </div>
