@@ -47,25 +47,16 @@ export default async function FilialPage({ params }: Props) {
 
           {/* Logo */}
           <div className="flex flex-col items-center mb-8">
-            <div
-              className="rounded-3xl px-10 py-6"
-              style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(6px)' }}
-            >
-              {/* overflow hidden corta o "de Pinheiro" do fundo da imagem */}
-              <div style={{ overflow: 'hidden', height: '100px', width: '220px' }}>
-                <Image
-                  src="/logo.jpg"
-                  alt="Laboratório Mais Saúde"
-                  width={220}
-                  height={130}
-                  className="object-cover object-top"
-                  style={{ mixBlendMode: 'darken' }}
-                  priority
-                />
-              </div>
-            </div>
+            <Image
+              src="/logo.png"
+              alt="Laboratório Mais Saúde"
+              width={260}
+              height={160}
+              className="object-contain drop-shadow-lg"
+              priority
+            />
             {/* Badge da filial */}
-            <span className="mt-4 px-4 py-1.5 rounded-full bg-white/20 text-white text-xs font-semibold tracking-wide">
+            <span className="mt-3 px-4 py-1.5 rounded-full bg-white/20 text-white text-xs font-semibold tracking-wide">
               Unidade {nomeFilial}
             </span>
           </div>
