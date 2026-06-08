@@ -40,13 +40,17 @@ export default function Home() {
 
           {/* Logo */}
           <div className="flex justify-center mb-8">
-            <div className="bg-white rounded-3xl shadow-2xl px-10 py-7">
+            <div
+              className="rounded-3xl px-10 py-6"
+              style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(6px)' }}
+            >
               <Image
                 src="/logo.jpg"
                 alt="Laboratório Mais Saúde"
                 width={220}
                 height={130}
                 className="object-contain"
+                style={{ mixBlendMode: 'darken' }}
                 priority
               />
             </div>
