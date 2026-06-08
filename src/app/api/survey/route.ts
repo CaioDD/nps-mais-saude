@@ -9,7 +9,12 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: 'Filial inválida' }, { status: 400 });
   }
 
-  await appendResposta({ ...body, timestamp: body.timestamp ?? new Date().toISOString() });
+  try {
+    await appendResposta({ ...body, timestamp: body.timestamp ?? new Date().toISOString() });
+  } catch (err) {
+    console.error('[survey] Erro ao salvar no Sheets:', err);
+    return Response.json({ error: String(err) }, { status: 500 });
+  }
 
   return Response.json({ ok: true });
 }

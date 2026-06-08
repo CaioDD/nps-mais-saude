@@ -1,11 +1,18 @@
 import { google } from 'googleapis';
 
 function getAuth() {
-  const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+  let privateKey = process.env.GOOGLE_PRIVATE_KEY ?? '';
+  // Remove outer quotes if accidentally included
+  if (privateKey.startsWith('"') && privateKey.endsWith('"')) {
+    privateKey = privateKey.slice(1, -1);
+  }
+  // Replace escaped newlines with real newlines
+  privateKey = privateKey.replace(/\\n/g, '\n');
+
   const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
 
   if (!privateKey || !clientEmail) {
-    throw new Error('Credenciais do Google não configuradas no .env.local');
+    throw new Error(`Credenciais não configuradas. email=${!!clientEmail} key=${!!privateKey}`);
   }
 
   return new google.auth.GoogleAuth({
@@ -38,16 +45,16 @@ export async function appendResposta(dados: Record<string, unknown>) {
     'Comentários',
   ];
 
-  // Verifica se já tem cabeçalho
+  // Verifica se já tem cabeçalho na aba Respostas
   const existing = await sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
-    range: 'A1:A1',
+    range: 'Respostas!A1:A1',
   });
 
   if (!existing.data.values) {
     await sheets.spreadsheets.values.append({
       spreadsheetId: sheetId,
-      range: 'A1',
+      range: 'Respostas!A1',
       valueInputOption: 'USER_ENTERED',
       requestBody: { values: [cabecalho] },
     });
@@ -72,7 +79,7 @@ export async function appendResposta(dados: Record<string, unknown>) {
 
   await sheets.spreadsheets.values.append({
     spreadsheetId: sheetId,
-    range: 'A1',
+    range: 'Respostas!A1',
     valueInputOption: 'USER_ENTERED',
     requestBody: { values: [linha] },
   });
