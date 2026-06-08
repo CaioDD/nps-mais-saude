@@ -71,7 +71,7 @@ export async function appendResposta(dados: Record<string, unknown>) {
 
   // Linha de dados
   const linha = [
-    new Date(dados.timestamp as string).toLocaleString('pt-BR'),
+    new Date(dados.timestamp as string).toLocaleString('pt-BR', { timeZone: 'America/Fortaleza' }),
     dados.filial,
     dados.nps,
     dados.experienciaGeral,
