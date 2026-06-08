@@ -1,12 +1,21 @@
 import { google } from 'googleapis';
 
 function getAuth() {
+  // Preferred: full service account JSON encoded as base64 (avoids newline issues)
+  const jsonB64 = process.env.GOOGLE_SERVICE_ACCOUNT_JSON_B64;
+  if (jsonB64) {
+    const creds = JSON.parse(Buffer.from(jsonB64, 'base64').toString('utf8'));
+    return new google.auth.GoogleAuth({
+      credentials: creds,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+  }
+
+  // Fallback: individual env vars
   let privateKey = process.env.GOOGLE_PRIVATE_KEY ?? '';
-  // Remove outer quotes if accidentally included
   if (privateKey.startsWith('"') && privateKey.endsWith('"')) {
     privateKey = privateKey.slice(1, -1);
   }
-  // Replace escaped newlines with real newlines
   privateKey = privateKey.replace(/\\n/g, '\n');
 
   const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
