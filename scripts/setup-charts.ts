@@ -52,7 +52,11 @@ async function main() {
 
   const grafId = setupResult.data.replies
     ?.find(r => r.addSheet)
-    ?.addSheet?.properties?.sheetId!;
+    ?.addSheet?.properties?.sheetId;
+
+  if (grafId === undefined || grafId === null) {
+    throw new Error('Não foi possível obter o ID da aba "Gráficos".');
+  }
 
   console.log('Aba "Gráficos" criada, ID:', grafId);
   await new Promise(r => setTimeout(r, 1500));
