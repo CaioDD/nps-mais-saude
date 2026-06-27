@@ -15,8 +15,35 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: 'Clínica e Laboratório Mais Saúde',
-  description: 'Perto de você, cuidando de verdade.',
+  metadataBase: new URL('https://www.maissaudelab.com.br'),
+  title: {
+    default: 'Clínica e Laboratório Mais Saúde',
+    template: '%s | Mais Saúde',
+  },
+  description: 'Exames laboratoriais, toxicológico, ultrassonografia e atendimento próximo em unidades no interior do Maranhão.',
+  applicationName: 'Mais Saúde',
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Clínica e Laboratório Mais Saúde',
+    description: 'Cuidado de laboratório com atenção de verdade no interior do Maranhão.',
+    url: '/',
+    siteName: 'Mais Saúde',
+    locale: 'pt_BR',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
 };
 
 export const viewport: Viewport = {

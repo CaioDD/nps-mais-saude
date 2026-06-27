@@ -5,8 +5,15 @@ import { FILIAIS_LIST } from '@/lib/filiais';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'NPS · Avalie sua experiência | Mais Saúde',
+  title: 'NPS · Avalie sua experiência',
   description: 'Escolha a unidade da Mais Saúde onde você foi atendido e envie sua avaliação.',
+  alternates: {
+    canonical: '/nps',
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function NpsLandingPage() {

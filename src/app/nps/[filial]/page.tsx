@@ -14,8 +14,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const nome = getNomeFilial(filial);
 
   return {
-    title: `NPS ${nome} · Mais Saúde`,
+    title: `NPS ${nome}`,
     description: `Avalie sua experiência na unidade ${nome} da Mais Saúde.`,
+    alternates: {
+      canonical: `/nps/${filial}`,
+    },
+    robots: {
+      index: false,
+      follow: false,
+    },
   };
 }
 

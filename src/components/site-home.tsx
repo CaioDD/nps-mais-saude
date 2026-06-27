@@ -217,7 +217,7 @@ export default function SiteHome() {
             Seis cidades, <em>o mesmo cuidado</em>
           </h2>
           <p className="sec-intro">
-            Escolha a unidade mais perto de você. Os dados completos de endereço, mapas e WhatsApp serão conectados aqui depois.
+            Escolha a unidade mais perto de você para falar no WhatsApp, abrir o mapa ou avaliar seu atendimento.
           </p>
           <div className="unit-grid">
             {FILIAIS_LIST.map((filial, index) => (
@@ -266,7 +266,7 @@ export default function SiteHome() {
             Bora cuidar disso <em>com calma e atenção?</em>
           </h2>
           <p>
-            Para testar o fluxo, o WhatsApp da matriz em Pinheiro já está conectado. Os demais contatos entram depois.
+            Escolha a unidade mais próxima e fale com a equipe para tirar dúvidas, confirmar preparo e combinar seu atendimento.
           </p>
           <a href="#onde-estamos" className="btn btn-primary">
             Encontrar unidade
