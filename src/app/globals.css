@@ -2868,6 +2868,16 @@ svg {
     line-height: .98;
   }
 
+  .brand-hero-slide-quote .brand-hero-copy h1 {
+    width: 100%;
+    max-width: none;
+    font-size: clamp(34px, 8.5vw, 42px);
+  }
+
+  .brand-hero-slide-quote .brand-hero-copy h1 > .brand-hero-line {
+    width: 100%;
+  }
+
   .brand-hero-copy h1 strong.brand-hero-line {
     color: var(--green);
   }
@@ -2929,6 +2939,12 @@ svg {
   @keyframes brandHeroZoom {
     from { transform: scale(1); }
     to { transform: scale(1.13); }
+  }
+}
+
+@media (min-width: 430px) and (max-width: 720px) {
+  .brand-hero-slide-quote .brand-hero-copy h1 > .brand-hero-line:first-child {
+    flex-wrap: nowrap;
   }
 }
 
