@@ -11,6 +11,7 @@ const links = [
   { id: 'o-que-fazemos', href: '/#o-que-fazemos', label: 'Guia de Exames' },
   { id: 'coleta', href: '/#onde-estamos', label: 'Coleta domiciliar' },
   { id: 'unidades', href: '/#onde-estamos', label: 'Unidades' },
+  { id: 'avaliar', href: '/nps', label: 'Avalie-nos' },
 ];
 
 type Panel = 'menu' | 'search' | null;

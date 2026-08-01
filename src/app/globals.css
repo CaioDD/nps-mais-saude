@@ -1710,7 +1710,9 @@ svg {
   padding: 18px clamp(24px, 6vw, 88px);
   border: 0;
   border-radius: 0;
-  background: var(--green);
+  background:
+    radial-gradient(circle at 11% 50%, rgba(239, 225, 176, .08) 0%, rgba(239, 225, 176, 0) 27%),
+    linear-gradient(110deg, #00382f 0%, #004d44 42%, #006057 100%);
   box-shadow: 0 1px 0 rgba(239, 225, 176, .14);
 }
 
@@ -1718,7 +1720,10 @@ svg {
   min-height: 82px;
   padding: 10px clamp(24px, 6vw, 88px);
   border-radius: 0;
-  background: rgba(0, 84, 76, .98);
+  background:
+    radial-gradient(circle at 10% 50%, rgba(239, 225, 176, .06) 0%, rgba(239, 225, 176, 0) 25%),
+    linear-gradient(110deg, rgba(0, 56, 47, .99) 0%, rgba(0, 77, 68, .98) 44%, rgba(0, 96, 87, .97) 100%);
+  backdrop-filter: blur(10px);
 }
 
 .brand-official {
@@ -2111,7 +2116,7 @@ svg {
   line-height: 1;
 }
 
-@media (min-width: 721px) and (max-width: 900px) {
+@media (min-width: 721px) and (max-width: 1040px) {
   .brand-wordmark {
     display: none;
   }
