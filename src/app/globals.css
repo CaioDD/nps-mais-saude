@@ -1191,6 +1191,95 @@ svg {
   background: rgba(255, 253, 246, .7);
 }
 
+.instagram-section {
+  scroll-margin-top: 112px;
+  padding: 0 0 clamp(58px, 8vw, 96px);
+  background: var(--cream);
+}
+
+.instagram-card {
+  position: relative;
+  display: grid;
+  gap: 22px;
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(28px, 5vw, 52px);
+  border: 1px solid rgba(239, 225, 176, .22);
+  border-radius: 28px;
+  color: var(--cream);
+  background:
+    radial-gradient(circle at 92% 10%, rgba(239, 225, 176, .18), transparent 32%),
+    linear-gradient(135deg, var(--green) 0%, var(--green-deep) 100%);
+  box-shadow: 0 24px 60px rgba(0, 56, 47, .16);
+}
+
+.instagram-icon {
+  display: inline-flex;
+  width: 68px;
+  height: 68px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(239, 225, 176, .34);
+  border-radius: 20px;
+  color: var(--sand);
+  background: rgba(239, 225, 176, .08);
+}
+
+.instagram-icon svg {
+  width: 38px;
+  height: 38px;
+}
+
+.instagram-copy > span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--sand);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.instagram-copy h2 {
+  max-width: 620px;
+  margin: 0;
+  color: var(--cream);
+  font-family: var(--font-fraunces), serif;
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 500;
+  line-height: 1.08;
+}
+
+.instagram-copy p {
+  max-width: 64ch;
+  margin: 12px 0 0;
+  color: rgba(248, 247, 242, .76);
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+.instagram-link {
+  display: inline-flex;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  color: var(--green-deep);
+  background: var(--sand);
+  font-size: 14px;
+  font-weight: 850;
+  white-space: nowrap;
+  transition: transform .18s ease, background .18s ease;
+}
+
+.instagram-link:hover,
+.instagram-link:focus-visible {
+  transform: translateY(-2px);
+  background: #f6e9bd;
+}
+
 .final {
   position: relative;
   overflow: hidden;
@@ -1513,6 +1602,10 @@ svg {
     flex-direction: column;
   }
 
+  .instagram-card {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
   .foot-grid {
     grid-template-columns: 1.4fr 1fr 1fr;
     gap: 40px;
@@ -1539,6 +1632,19 @@ svg {
 
   .unit-tag {
     white-space: normal;
+  }
+
+  .instagram-section {
+    scroll-margin-top: 68px;
+  }
+
+  .instagram-card {
+    align-items: start;
+    border-radius: 22px;
+  }
+
+  .instagram-link {
+    width: 100%;
   }
 
   .hero-photo {
@@ -1616,7 +1722,9 @@ svg {
 }
 
 .brand-official {
-  line-height: 0;
+  flex: none;
+  gap: 14px;
+  line-height: 1;
 }
 
 .brand-logo-image {
@@ -1629,10 +1737,93 @@ svg {
   width: 54px;
 }
 
+.brand-wordmark {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--sand);
+  font-family: var(--font-figtree), Arial, Helvetica, sans-serif;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.brand-wordmark small {
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: .17em;
+}
+
+.brand-wordmark strong {
+  font-size: clamp(19px, 1.65vw, 24px);
+  font-weight: 850;
+  letter-spacing: .045em;
+}
+
+.header.shrink .brand-wordmark {
+  gap: 3px;
+}
+
+.header.shrink .brand-wordmark small {
+  font-size: 8px;
+}
+
+.header.shrink .brand-wordmark strong {
+  font-size: 19px;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 2.2vw, 34px);
+  margin-left: auto;
+  margin-right: clamp(18px, 3vw, 42px);
+}
+
+.header-nav a {
+  position: relative;
+  padding: 10px 0;
+  color: rgba(248, 247, 242, .88);
+  font-size: clamp(12px, 1.05vw, 14px);
+  font-weight: 750;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  transition: color .18s ease;
+}
+
+.header-nav a::after {
+  position: absolute;
+  right: 0;
+  bottom: 3px;
+  left: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--sand);
+  content: '';
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .18s ease;
+}
+
+.header-nav a:hover,
+.header-nav a:focus-visible {
+  color: var(--sand);
+}
+
+.header-nav a:hover::after,
+.header-nav a:focus-visible::after {
+  transform: scaleX(1);
+}
+
 .header-tools {
   display: flex;
   align-items: center;
   gap: clamp(12px, 2.4vw, 30px);
+}
+
+.header-tools .burger {
+  display: none;
 }
 
 .header-tool,
@@ -1920,6 +2111,12 @@ svg {
   line-height: 1;
 }
 
+@media (min-width: 721px) and (max-width: 900px) {
+  .brand-wordmark {
+    display: none;
+  }
+}
+
 @media (max-width: 720px) {
   .header,
   .header.shrink {
@@ -1930,6 +2127,35 @@ svg {
   .brand-logo-image,
   .header.shrink .brand-logo-image {
     width: 42px;
+  }
+
+  .brand-official {
+    gap: 9px;
+  }
+
+  .brand-wordmark,
+  .header.shrink .brand-wordmark {
+    gap: 2px;
+  }
+
+  .brand-wordmark small,
+  .header.shrink .brand-wordmark small {
+    font-size: 6.5px;
+    letter-spacing: .13em;
+  }
+
+  .brand-wordmark strong,
+  .header.shrink .brand-wordmark strong {
+    font-size: 13px;
+    letter-spacing: .035em;
+  }
+
+  .header-nav {
+    display: none;
+  }
+
+  .header-tools .burger {
+    display: inline-flex;
   }
 
   .header-tool,
@@ -1949,7 +2175,7 @@ svg {
 
   .wa-float {
     right: 12px;
-    bottom: 62px;
+    bottom: 14px;
   }
 
   .wa-float .ico {
@@ -2154,7 +2380,7 @@ svg {
   gap: clamp(42px, 7vw, 96px);
   align-items: center;
   padding-top: 52px;
-  padding-bottom: 142px;
+  padding-bottom: 82px;
 }
 
 .brand-hero-copy {
@@ -2428,46 +2654,10 @@ svg {
   animation: brandHeroProgress 8s .86s linear both;
 }
 
-.brand-hero-shortcuts {
-  position: absolute;
-  inset: auto 0 0;
-  z-index: 6;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  min-height: 72px;
-  color: var(--green-deep);
-  background: rgba(239, 225, 176, .96);
-  box-shadow: 0 -12px 36px rgba(0, 36, 31, .14);
-  backdrop-filter: blur(8px);
-}
-
-.brand-hero-shortcuts a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 14px 12px;
-  border-right: 1px solid rgba(0, 84, 76, .24);
-  font-size: 15px;
-  font-weight: 850;
-  letter-spacing: .025em;
-  text-align: center;
-  text-transform: uppercase;
-  transition: color .18s ease, background .18s ease;
-}
-
-.brand-hero-shortcuts a:last-child {
-  border-right: 0;
-}
-
-.brand-hero-shortcuts a:hover,
-.brand-hero-shortcuts a:focus-visible {
-  color: var(--cream);
-  background: var(--green);
-}
 
 .brand-hero-dots {
   position: absolute;
-  bottom: 96px;
+  bottom: 28px;
   left: max(22px, calc((100vw - 1080px) / 2 + 32px));
   z-index: 7;
   display: flex;
@@ -2614,7 +2804,7 @@ svg {
     gap: 14px;
     align-items: stretch;
     justify-content: space-between;
-    padding: 22px 16px 82px;
+    padding: 22px 16px 48px;
   }
 
   .brand-hero-copy {
@@ -2705,29 +2895,9 @@ svg {
     line-height: 1.42;
   }
 
-  .brand-hero-shortcuts {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    min-height: 52px;
-    overflow: hidden;
-    color: var(--sand);
-    background: rgba(0, 36, 31, .98);
-    scrollbar-width: none;
-  }
-
-  .brand-hero-shortcuts::-webkit-scrollbar {
-    display: none;
-  }
-
-  .brand-hero-shortcuts a {
-    min-width: 0;
-    padding: 10px 7px;
-    border-color: rgba(239, 225, 176, .16);
-    font-size: clamp(8px, 2.5vw, 10px);
-    letter-spacing: .04em;
-  }
 
   .brand-hero-dots {
-    bottom: 65px;
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
   }
@@ -2750,7 +2920,7 @@ svg {
 @media (max-width: 720px) and (max-height: 720px) {
   .brand-hero-layout {
     gap: 8px;
-    padding: 14px 12px 68px;
+    padding: 14px 12px 38px;
   }
 
   .brand-hero-copy {
@@ -2791,15 +2961,12 @@ svg {
     font-size: 11.5px;
   }
 
-  .brand-hero-shortcuts {
-    min-height: 48px;
-  }
 
   .brand-hero-dots {
-    bottom: 57px;
+    bottom: 14px;
   }
 
   .wa-float {
-    bottom: 56px;
+    bottom: 14px;
   }
 }

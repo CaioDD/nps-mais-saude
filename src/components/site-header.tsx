@@ -4,13 +4,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+const RESULTS_URL = 'https://portal.worklabweb.com.br/resultados-on-line/2974';
+
 const links = [
-  { id: 'quem-somos', href: '/#quem-somos', label: 'Quem somos' },
-  { id: 'o-que-fazemos', href: '/#o-que-fazemos', label: 'Guia de exames' },
-  { id: 'resultados', href: '/#onde-estamos', label: 'Resultado de exames' },
+  { id: 'resultados', href: RESULTS_URL, label: 'Resultados', external: true },
+  { id: 'o-que-fazemos', href: '/#o-que-fazemos', label: 'Guia de Exames' },
   { id: 'coleta', href: '/#onde-estamos', label: 'Coleta domiciliar' },
-  { id: 'unidades', href: '/#onde-estamos', label: 'Unidades de atendimento' },
-  { id: 'avaliar', href: '/nps', label: 'Avaliar atendimento', cta: true },
+  { id: 'unidades', href: '/#onde-estamos', label: 'Unidades' },
 ];
 
 type Panel = 'menu' | 'search' | null;
@@ -64,8 +64,27 @@ export default function SiteHeader() {
             loading="eager"
             unoptimized
           />
+          <span className="brand-wordmark" aria-hidden="true">
+            <small>Clínica e Laboratório</small>
+            <strong>Mais Saúde</strong>
+          </span>
           <span className="sr-only">Clínica e Laboratório Mais Saúde</span>
         </Link>
+
+        <nav className="header-nav" aria-label="Acessos principais">
+          {links.map((link) => (
+            <Link
+              key={link.id}
+              href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noopener noreferrer' : undefined}
+              prefetch={link.external ? false : undefined}
+              onClick={close}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
 
         <div className="header-tools">
           <button
@@ -102,7 +121,14 @@ export default function SiteHeader() {
         <div className="drawer-title">Menu</div>
         <div className="drawer-grid">
           {links.map((link) => (
-            <Link key={link.id} href={link.href} className={link.cta ? 'd-cta' : ''} onClick={close}>
+            <Link
+              key={link.id}
+              href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noopener noreferrer' : undefined}
+              prefetch={link.external ? false : undefined}
+              onClick={close}
+            >
               {link.label}
             </Link>
           ))}
@@ -128,7 +154,16 @@ export default function SiteHeader() {
         <div className="search-results" aria-live="polite">
           {filteredLinks.length ? (
             filteredLinks.map((link) => (
-              <Link key={link.id} href={link.href} onClick={close}>{link.label}</Link>
+              <Link
+                key={link.id}
+                href={link.href}
+                target={link.external ? '_blank' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
+                prefetch={link.external ? false : undefined}
+                onClick={close}
+              >
+                {link.label}
+              </Link>
             ))
           ) : (
             <span>Nenhum atalho encontrado.</span>

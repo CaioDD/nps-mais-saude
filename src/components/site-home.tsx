@@ -7,7 +7,7 @@ import WhatsAppIcon from './whatsapp-icon';
 import { FILIAIS_LIST } from '@/lib/filiais';
 
 const stats = [
-  ['6', 'unidades no Maranhão'],
+  ['6', 'na baixada'],
   ['+ cuidado', 'atendimento próximo'],
   ['Rotina', 'exames clínicos'],
   ['2025', 'reconhecimento regional'],
@@ -30,6 +30,7 @@ const steps = [
 
 const pinheiro = FILIAIS_LIST.find((filial) => filial.slug === 'pinheiro');
 const pinheiroWhatsAppUrl = pinheiro && 'whatsappUrl' in pinheiro ? pinheiro.whatsappUrl : '#contato';
+const instagramUrl = 'https://www.instagram.com/labmaissaude_/#';
 
 export default function SiteHome() {
   return (
@@ -206,6 +207,29 @@ export default function SiteHome() {
         </div>
       </section>
 
+      <section className="instagram-section" id="instagram" aria-labelledby="instagram-title">
+        <div className="wrap">
+          <div className="instagram-card">
+            <span className="instagram-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+              </svg>
+            </span>
+            <div className="instagram-copy">
+              <span>Acompanhe a Mais Saúde</span>
+              <h2 id="instagram-title">Cuidado e informação também no Instagram</h2>
+              <p>Novidades, orientações sobre exames e o dia a dia das nossas unidades, sempre perto de você.</p>
+            </div>
+            <a className="instagram-link" href={instagramUrl} target="_blank" rel="noopener noreferrer">
+              Seguir @labmaissaude_
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="sec final" id="contato">
         <div className="wrap">
           <BrandCross />
@@ -252,7 +276,7 @@ export default function SiteHome() {
               <h4>Fale com a gente</h4>
               <ul>
                 <li><a href={pinheiroWhatsAppUrl} target="_blank" rel="noopener noreferrer">WhatsApp da sede: 98 98498-6804</a></li>
-                <li><span>@labmaissaude_</span></li>
+                <li><a href={instagramUrl} target="_blank" rel="noopener noreferrer">Instagram: @labmaissaude_</a></li>
                 <li><span>E-mail em atualização</span></li>
               </ul>
             </div>

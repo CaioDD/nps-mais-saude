@@ -207,12 +207,6 @@ export default function HomeHero({ whatsappUrl }: HomeHeroProps) {
           );
         })}
 
-        <nav className="brand-hero-shortcuts" aria-label="Acessos rápidos">
-          <a href="#onde-estamos">Resultados</a>
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">Orçamentos</a>
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">Coleta</a>
-          <a href="#onde-estamos">Unidades</a>
-        </nav>
 
         <div className="brand-hero-dots" role="group" aria-label="Escolher destaque">
           {slides.map((slide, index) => (
