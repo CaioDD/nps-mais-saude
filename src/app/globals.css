@@ -2629,6 +2629,18 @@ svg {
     backdrop-filter: blur(9px);
   }
 
+  .brand-hero-slide-quote .brand-hero-copy {
+    background: linear-gradient(
+      100deg,
+      rgba(248, 247, 242, .94) 0%,
+      rgba(248, 247, 242, .92) 62%,
+      rgba(248, 247, 242, .76) 80%,
+      rgba(248, 247, 242, .52) 100%
+    );
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+  }
+
   .brand-hero-eyebrow {
     margin-bottom: 11px;
     color: var(--green);
