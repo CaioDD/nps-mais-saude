@@ -278,9 +278,13 @@ svg {
   background: var(--wa);
   box-shadow: 0 8px 26px rgba(37, 211, 102, .42), 0 2px 8px rgba(0, 0, 0, .18);
   transition: transform .15s ease, box-shadow .15s ease;
+  transform-origin: center;
+  animation: whatsappCallout 7s ease-in-out infinite;
 }
 
-.wa-float:hover {
+.wa-float:hover,
+.wa-float:focus-visible {
+  animation: none;
   transform: scale(1.05);
   box-shadow: 0 12px 32px rgba(37, 211, 102, .5);
 }
@@ -297,6 +301,23 @@ svg {
 .wa-float .ico svg {
   width: 32px;
   height: 32px;
+}
+
+@keyframes whatsappCallout {
+  0%, 66%, 88%, 100% {
+    transform: translateX(0) rotate(0) scale(1);
+    box-shadow: 0 8px 26px rgba(37, 211, 102, .42), 0 2px 8px rgba(0, 0, 0, .18);
+  }
+  68% { transform: translateX(-4px) rotate(-6deg) scale(1.06); }
+  71% { transform: translateX(5px) rotate(7deg) scale(1.08); }
+  74% { transform: translateX(-5px) rotate(-7deg) scale(1.08); }
+  77% { transform: translateX(5px) rotate(6deg) scale(1.08); }
+  80% {
+    transform: translateX(-3px) rotate(-4deg) scale(1.1);
+    box-shadow: 0 0 0 12px rgba(37, 211, 102, 0), 0 14px 34px rgba(37, 211, 102, .5);
+  }
+  83% { transform: translateX(2px) rotate(3deg) scale(1.06); }
+  86% { transform: translateX(0) rotate(0) scale(1); }
 }
 
 .wa-float .label {
@@ -2815,25 +2836,14 @@ svg {
   .brand-hero-copy {
     width: 100%;
     max-width: none;
-    padding: 22px 22px 20px;
-    border: 1px solid rgba(255, 255, 255, .42);
+    padding: 20px 22px 18px;
+    border: 1px solid rgba(255, 255, 255, .38);
     border-radius: 22px;
     color: var(--green-deep);
-    background: rgba(248, 247, 242, .88);
-    box-shadow: 0 18px 40px rgba(0, 34, 29, .15);
-    backdrop-filter: blur(9px);
-  }
-
-  .brand-hero-slide-quote .brand-hero-copy {
-    background: linear-gradient(
-      100deg,
-      rgba(248, 247, 242, .94) 0%,
-      rgba(248, 247, 242, .92) 62%,
-      rgba(248, 247, 242, .76) 80%,
-      rgba(248, 247, 242, .52) 100%
-    );
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
+    background: linear-gradient(160deg, rgba(248, 247, 242, .84), rgba(248, 247, 242, .70));
+    box-shadow: 0 12px 28px rgba(0, 40, 34, .10);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
   }
 
   .brand-hero-eyebrow {
@@ -2929,7 +2939,7 @@ svg {
   }
 
   .brand-hero-copy {
-    padding: 16px 18px 14px;
+    padding: 14px 18px 13px;
     border-radius: 18px;
   }
 
