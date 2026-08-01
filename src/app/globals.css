@@ -1923,28 +1923,38 @@ svg {
 @media (max-width: 720px) {
   .header,
   .header.shrink {
-    min-height: 86px;
-    padding: 10px 20px;
+    min-height: 68px;
+    padding: 7px 14px;
   }
 
   .brand-logo-image,
   .header.shrink .brand-logo-image {
-    width: 54px;
+    width: 42px;
   }
 
   .header-tool,
   .burger,
   .search-button {
-    width: 45px;
-    height: 45px;
-    padding: 7px;
+    width: 38px;
+    height: 38px;
+    padding: 6px;
   }
 
   .header-tool svg,
   .burger svg,
   .search-button svg {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .wa-float {
+    right: 12px;
+    bottom: 62px;
+  }
+
+  .wa-float .ico {
+    width: 52px;
+    height: 52px;
   }
 
   .drawer-grid {
@@ -2577,12 +2587,13 @@ svg {
 
 @media (max-width: 720px) {
   .brand-hero {
-    padding-top: 86px;
+    padding-top: 68px;
   }
 
   .brand-hero-stage,
   .brand-hero-layout {
-    min-height: max(700px, calc(100svh - 86px));
+    height: calc(100svh - 68px);
+    min-height: 0;
   }
 
   .brand-hero-image {
@@ -2603,7 +2614,7 @@ svg {
     gap: 14px;
     align-items: stretch;
     justify-content: space-between;
-    padding: 28px 16px 90px;
+    padding: 22px 16px 82px;
   }
 
   .brand-hero-copy {
@@ -2683,8 +2694,9 @@ svg {
   }
 
   .brand-hero-shortcuts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     min-height: 52px;
-    overflow-x: auto;
+    overflow: hidden;
     color: var(--sand);
     background: rgba(0, 36, 31, .98);
     scrollbar-width: none;
@@ -2695,10 +2707,10 @@ svg {
   }
 
   .brand-hero-shortcuts a {
-    min-width: 92px;
+    min-width: 0;
     padding: 10px 7px;
     border-color: rgba(239, 225, 176, .16);
-    font-size: 10px;
+    font-size: clamp(8px, 2.5vw, 10px);
     letter-spacing: .04em;
   }
 
@@ -2720,5 +2732,62 @@ svg {
   @keyframes brandHeroZoom {
     from { transform: scale(1); }
     to { transform: scale(1.13); }
+  }
+}
+
+@media (max-width: 720px) and (max-height: 720px) {
+  .brand-hero-layout {
+    gap: 8px;
+    padding: 14px 12px 68px;
+  }
+
+  .brand-hero-copy {
+    padding: 16px 18px 14px;
+    border-radius: 18px;
+  }
+
+  .brand-hero-eyebrow {
+    margin-bottom: 7px;
+  }
+
+  .brand-hero-copy h1 {
+    font-size: clamp(31px, 9.4vw, 40px);
+  }
+
+  .brand-hero-cta {
+    min-height: 38px;
+    margin-top: 12px;
+    padding: 8px 16px;
+  }
+
+  .brand-hero-info {
+    padding: 14px 18px 12px;
+    border-radius: 18px;
+  }
+
+  .brand-hero-number {
+    font-size: 38px;
+  }
+
+  .brand-hero-arrows button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brand-hero-info > p {
+    margin: 8px 0 10px;
+    font-size: 11.5px;
+  }
+
+  .brand-hero-shortcuts {
+    min-height: 48px;
+  }
+
+  .brand-hero-dots {
+    bottom: 57px;
+  }
+
+  .wa-float {
+    bottom: 56px;
   }
 }
