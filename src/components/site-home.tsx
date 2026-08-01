@@ -1,5 +1,7 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import BrandCross from './brand-cross';
+import HomeHero from './home-hero';
 import SiteHeader from './site-header';
 import WhatsAppIcon from './whatsapp-icon';
 import { FILIAIS_LIST } from '@/lib/filiais';
@@ -41,62 +43,7 @@ export default function SiteHome() {
         <span className="label">Agendar no WhatsApp</span>
       </a>
 
-      <header className="hero" id="topo">
-        <div className="wrap">
-          <div className="hero-grid">
-            <div>
-              <span className="hero-badge">
-                <BrandCross />
-                Perto de você
-              </span>
-              <h1>
-                Cuidado de laboratório com <em>atenção de verdade</em>
-              </h1>
-              <p className="hero-lead">
-                Exames, orientação e acolhimento para quem quer resolver a saúde com clareza, rapidez e gente que escuta.
-              </p>
-              <div className="hero-actions">
-                <a href="#onde-estamos" className="btn btn-primary">
-                  Falar no WhatsApp
-                </a>
-                <Link href="/nps" className="btn btn-ghost">
-                  Avaliar atendimento
-                </Link>
-              </div>
-              <div className="hero-trust">
-                <BrandCross />
-                Atendimento em múltiplas cidades do interior do Maranhão.
-              </div>
-            </div>
-            <div className="hero-photo">
-              <div className="journey-card">
-                <span className="journey-kicker">Agende sem complicação</span>
-                <h2>Seu exame começa com uma conversa simples</h2>
-                <div className="journey-steps" aria-label="Como agendar seu exame">
-                  <div>
-                    <strong>1</strong>
-                    <span>Fale com a gente</span>
-                  </div>
-                  <div>
-                    <strong>2</strong>
-                    <span>Faça o exame</span>
-                  </div>
-                  <div>
-                    <strong>3</strong>
-                    <span>Receba o resultado</span>
-                  </div>
-                </div>
-                <a href="#onde-estamos" className="journey-cta">
-                  Ver unidades <BrandCross />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <svg className="hero-wave" viewBox="0 0 1440 94" preserveAspectRatio="none" aria-hidden="true">
-          <path fill="var(--green-deep)" d="M0 40L80 46.7C160 53 320 67 480 58.7C640 50 800 20 960 13.3C1120 7 1280 23 1360 31.7L1440 40V94H0Z" />
-        </svg>
-      </header>
+      <HomeHero whatsappUrl={pinheiroWhatsAppUrl} />
 
       <section className="stats" aria-label="Indicadores">
         <div className="wrap">
@@ -279,9 +226,16 @@ export default function SiteHome() {
         <div className="wrap">
           <div className="foot-grid">
             <div>
-              <div className="brand">
-                <BrandCross className="logo" />
-                Mais Saúde
+              <div className="brand footer-brand">
+                <Image
+                  src="/brand/mais-saude-logo-mark.svg"
+                  width={112}
+                  height={126}
+                  alt=""
+                  className="footer-brand-logo"
+                  unoptimized
+                />
+                <span>Mais Saúde</span>
               </div>
               <p className="foot-desc">Clínica e Laboratório. Perto de você, cuidando de verdade, no interior do Maranhão.</p>
             </div>
