@@ -1,4 +1,4 @@
-﻿import 'server-only';
+import 'server-only';
 
 import { cookies } from 'next/headers';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
@@ -10,10 +10,10 @@ type AppSupabaseClient = SupabaseClient;
 
 const EXPERIENCE_VALUES = ['Excelente', 'Boa', 'Regular', 'Ruim'] as const;
 const RATING_VALUES = ['Excelente', 'Bom', 'Regular', 'Ruim'] as const;
-const SPEED_VALUES = ['Muito rapido', 'Muito rápido', 'Adequado', 'Demorado', 'Muito demorado'] as const;
-const ORIENTATION_VALUES = ['Sim', 'Mais ou menos', 'Nao', 'Não'] as const;
+const SPEED_VALUES = ['Muito rapido', 'Adequado', 'Demorado', 'Muito demorado'] as const;
+const ORIENTATION_VALUES = ['Sim', 'Mais ou menos', 'Nao'] as const;
 const COST_VALUES = ['Excelente', 'Bom', 'Regular', 'Ruim'] as const;
-const DISCOVERY_VALUES = ['Indicacao', 'Indicação', 'Medico', 'Médico', 'Instagram', 'Google', 'Passando na frente', 'Outros'] as const;
+const DISCOVERY_VALUES = ['Indicacao', 'Medico', 'Instagram', 'Google', 'Passando na frente', 'Outros'] as const;
 
 function optionalEnum<T extends readonly [string, ...string[]]>(values: T) {
   return z.preprocess(
@@ -115,7 +115,6 @@ const NPS_COLUMNS = [
   'custo_beneficio',
   'como_conheceu',
   'comentarios',
-  'nps_surveys(title,slug)',
 ].join(',');
 
 function requiredEnv(name: string, fallback?: string) {
@@ -390,5 +389,3 @@ export async function listSurveyBranches(supabase: AppSupabaseClient, organizati
 export function toLegacyDisplayName(filialSlug: string) {
   return getNomeFilial(filialSlug);
 }
-
-

@@ -1,11 +1,10 @@
-﻿import { NextRequest } from 'next/server';
+import { NextRequest } from 'next/server';
 import { checkRateLimit } from '@/lib/rate-limit';
 import {
   getClientIp,
   isAllowedOrigin,
   submitNpsResponse,
   validateSurveyPayload,
-  verifyTurnstileToken,
 } from '@/lib/supabase-server';
 
 export const dynamic = 'force-dynamic';
@@ -51,10 +50,6 @@ export async function POST(request: NextRequest) {
     return jsonError(validation.error ?? 'Payload invalido.', 400);
   }
 
-  const turnstile = await verifyTurnstileToken(validation.data.turnstileToken, 'nps_submit', request.headers);
-  if (!turnstile.ok) {
-    return jsonError('Nao foi possivel validar a protecao do formulario.', 403);
-  }
 
   try {
     const id = await submitNpsResponse(validation.data);
