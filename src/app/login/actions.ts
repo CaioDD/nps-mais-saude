@@ -86,7 +86,6 @@ export async function requestPasswordRecovery(
   formData: FormData,
 ): Promise<PasswordRecoveryState> {
   const email = String(formData.get('email') ?? '').trim().toLowerCase();
-  const turnstileToken = String(formData.get('turnstileToken') ?? '');
   const headersList = await headers();
   const ip = getClientIp(headersList);
 
@@ -95,10 +94,6 @@ export async function requestPasswordRecovery(
     return { error: 'Muitas tentativas. Aguarde alguns minutos e tente novamente.' };
   }
 
-  const turnstile = await verifyTurnstileToken(turnstileToken, 'password_recovery', headersList);
-  if (!turnstile.ok) {
-    return { error: 'Confirme a verificacao de seguranca para continuar.' };
-  }
 
   if (!/^\S+@\S+\.\S+$/.test(email)) {
     return { error: 'Informe um e-mail valido.' };
