@@ -1,0 +1,48 @@
+﻿name: Supabase encrypted backup
+
+on:
+  schedule:
+    - cron: '15 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      AGE_RECIPIENT: ${{ secrets.AGE_RECIPIENT }}
+    steps:
+      - name: Validate secrets
+        run: |
+          test -n "$SUPABASE_DB_URL"
+          test -n "$AGE_RECIPIENT"
+
+      - name: Install backup tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y age postgresql-client
+
+      - name: Dump roles, schema, and data
+        run: |
+          mkdir -p backup
+          pg_dumpall --dbname="$SUPABASE_DB_URL" --roles-only --file=backup/roles.sql
+          pg_dump --dbname="$SUPABASE_DB_URL" --schema-only --no-owner --no-privileges --file=backup/schema.sql
+          pg_dump --dbname="$SUPABASE_DB_URL" --data-only --no-owner --no-privileges --file=backup/data.sql
+
+      - name: Encrypt backup
+        run: |
+          tar -C backup -czf backup.tar.gz roles.sql schema.sql data.sql
+          age -r "$AGE_RECIPIENT" -o supabase-backup.tar.gz.age backup.tar.gz
+          rm -rf backup backup.tar.gz
+
+      - name: Upload encrypted artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: supabase-backup-${{ github.run_id }}
+          path: supabase-backup.tar.gz.age
+          retention-days: 30
+          if-no-files-found: error

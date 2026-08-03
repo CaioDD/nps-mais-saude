@@ -1,7 +1,8 @@
-'use client';
+﻿'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { ChevronLeft, CheckCircle2, Loader2 } from 'lucide-react';
+import TurnstileField from '@/components/turnstile-field';
 
 interface FormData {
   nps: number | null;
@@ -32,6 +33,7 @@ const INITIAL: FormData = {
 };
 
 const TOTAL_STEPS = 8;
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? '';
 
 function npsClass(n: number, selected: boolean) {
   const base =
@@ -106,17 +108,17 @@ function SubRating({
 }
 
 const RATING = [
-  { emoji: '😍', label: 'Excelente', value: 'Excelente' },
-  { emoji: '😊', label: 'Bom', value: 'Bom' },
-  { emoji: '😐', label: 'Regular', value: 'Regular' },
-  { emoji: '😞', label: 'Ruim', value: 'Ruim' },
+  { emoji: 'ðŸ˜', label: 'Excelente', value: 'Excelente' },
+  { emoji: 'ðŸ˜Š', label: 'Bom', value: 'Bom' },
+  { emoji: 'ðŸ˜', label: 'Regular', value: 'Regular' },
+  { emoji: 'ðŸ˜ž', label: 'Ruim', value: 'Ruim' },
 ];
 
 const SPEED = [
-  { emoji: '⚡', label: 'Muito rápido', value: 'Muito rápido' },
-  { emoji: '✅', label: 'Adequado', value: 'Adequado' },
-  { emoji: '🐢', label: 'Demorado', value: 'Demorado' },
-  { emoji: '🐌', label: 'Muito demorado', value: 'Muito demorado' },
+  { emoji: 'âš¡', label: 'Muito rÃ¡pido', value: 'Muito rÃ¡pido' },
+  { emoji: 'âœ…', label: 'Adequado', value: 'Adequado' },
+  { emoji: 'ðŸ¢', label: 'Demorado', value: 'Demorado' },
+  { emoji: 'ðŸŒ', label: 'Muito demorado', value: 'Muito demorado' },
 ];
 
 export default function NpsForm({ filial }: { filial?: string }) {
@@ -126,6 +128,8 @@ export default function NpsForm({ filial }: { filial?: string }) {
   const [data, setData] = useState<FormData>(INITIAL);
   const [enviado, setEnviado] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState('');
   const advancingRef = useRef(false);
 
   const go = (newStep: number, direction: 'fwd' | 'bwd', patch?: Partial<FormData>) => {
@@ -149,27 +153,54 @@ export default function NpsForm({ filial }: { filial?: string }) {
     }, 260);
   };
 
+  const handleTurnstileToken = useCallback((token: string) => {
+    setTurnstileToken(token);
+    setSubmitError(null);
+  }, []);
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    setSubmitError(null);
+
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setSubmitError('Confirme a verificacao de seguranca para enviar.');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      await fetch('/api/survey', {
+      const response = await fetch('/api/survey', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, filial: filial ?? 'desconhecida', timestamp: new Date().toISOString() }),
+        body: JSON.stringify({
+          ...data,
+          filial: filial ?? 'desconhecida',
+          submissionId: crypto.randomUUID(),
+          turnstileToken,
+        }),
       });
-    } catch {
-      // fail silently — user gets thank you regardless
-    }
-    setIsSubmitting(false);
-    setEnviado(true);
-  };
 
+      if (!response.ok) {
+        const result = (await response.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(result?.error ?? 'Nao foi possivel salvar sua avaliacao.');
+      }
+
+      setEnviado(true);
+    } catch (error) {
+      setTurnstileToken('');
+      setSubmitError(error instanceof Error ? error.message : 'Nao foi possivel salvar sua avaliacao.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   const reset = () => {
     setData(INITIAL);
     setAnimKey((k) => k + 1);
     setDir('fwd');
     setStep(0);
     setEnviado(false);
+    setSubmitError(null);
+    setTurnstileToken('');
   };
 
   if (enviado) {
@@ -181,12 +212,12 @@ export default function NpsForm({ filial }: { filial?: string }) {
         </div>
         <div className="space-y-2">
           <h2 className="text-2xl font-black text-petroleum-dark">
-            {isPromoter ? 'Muito obrigado! 🎉' : 'Obrigado pelo feedback!'}
+            {isPromoter ? 'Muito obrigado! ðŸŽ‰' : 'Obrigado pelo feedback!'}
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto">
             {isPromoter
-              ? 'Ficamos muito felizes com sua avaliação! Sua opinião nos motiva a manter a qualidade.'
-              : 'Sua opinião é muito importante para nós. Vamos continuar trabalhando para melhorar!'}
+              ? 'Ficamos muito felizes com sua avaliaÃ§Ã£o! Sua opiniÃ£o nos motiva a manter a qualidade.'
+              : 'Sua opiniÃ£o Ã© muito importante para nÃ³s. Vamos continuar trabalhando para melhorar!'}
           </p>
         </div>
         <button
@@ -201,15 +232,15 @@ export default function NpsForm({ filial }: { filial?: string }) {
 
   const commentPrompt =
     data.nps !== null && data.nps >= 9
-      ? 'O que você mais gostou? 😊'
+      ? 'O que vocÃª mais gostou? ðŸ˜Š'
       : data.nps !== null && data.nps >= 7
-      ? 'Como podemos melhorar sua experiência?'
+      ? 'Como podemos melhorar sua experiÃªncia?'
       : 'O que podemos fazer para melhorar?';
 
   const steps: { title: string; content: React.ReactNode }[] = [
-    // 0 — NPS
+    // 0 â€” NPS
     {
-      title: 'De 0 a 10, qual a probabilidade de você indicar o Laboratório Mais Saúde a um amigo ou familiar?',
+      title: 'De 0 a 10, qual a probabilidade de vocÃª indicar o LaboratÃ³rio Mais SaÃºde a um amigo ou familiar?',
       content: (
         <div className="space-y-4">
           <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
@@ -225,23 +256,23 @@ export default function NpsForm({ filial }: { filial?: string }) {
             ))}
           </div>
           <div className="flex justify-between text-xs text-gray-400 font-semibold px-0.5">
-            <span>😞 Não indicaria</span>
-            <span>Com certeza! 😍</span>
+            <span>ðŸ˜ž NÃ£o indicaria</span>
+            <span>Com certeza! ðŸ˜</span>
           </div>
         </div>
       ),
     },
 
-    // 1 — Experiência geral
+    // 1 â€” ExperiÃªncia geral
     {
-      title: 'De forma geral, como foi sua experiência no laboratório hoje?',
+      title: 'De forma geral, como foi sua experiÃªncia no laboratÃ³rio hoje?',
       content: (
         <div className="grid grid-cols-2 gap-3">
           {[
-            { emoji: '😍', label: 'Excelente' },
-            { emoji: '😊', label: 'Boa' },
-            { emoji: '😐', label: 'Regular' },
-            { emoji: '😞', label: 'Ruim' },
+            { emoji: 'ðŸ˜', label: 'Excelente' },
+            { emoji: 'ðŸ˜Š', label: 'Boa' },
+            { emoji: 'ðŸ˜', label: 'Regular' },
+            { emoji: 'ðŸ˜ž', label: 'Ruim' },
           ].map((opt) => (
             <BigOption
               key={opt.label}
@@ -255,13 +286,13 @@ export default function NpsForm({ filial }: { filial?: string }) {
       ),
     },
 
-    // 2 — Atendimento
+    // 2 â€” Atendimento
     {
-      title: 'Como você avalia o atendimento?',
+      title: 'Como vocÃª avalia o atendimento?',
       content: (
         <div className="space-y-5">
           <SubRating
-            label="Recepção"
+            label="RecepÃ§Ã£o"
             options={RATING}
             value={data.atendimentoRecepcao}
             onChange={(v) => setData((p) => ({ ...p, atendimentoRecepcao: v }))}
@@ -278,16 +309,16 @@ export default function NpsForm({ filial }: { filial?: string }) {
               onClick={() => next()}
               className="w-full py-4 bg-petroleum-dark text-white font-bold rounded-2xl active:scale-95 transition-all touch-manipulation"
             >
-              Continuar →
+              Continuar â†’
             </button>
           )}
         </div>
       ),
     },
 
-    // 3 — Estrutura
+    // 3 â€” Estrutura
     {
-      title: 'E a estrutura do laboratório?',
+      title: 'E a estrutura do laboratÃ³rio?',
       content: (
         <div className="space-y-5">
           <SubRating
@@ -297,7 +328,7 @@ export default function NpsForm({ filial }: { filial?: string }) {
             onChange={(v) => setData((p) => ({ ...p, tempoEspera: v }))}
           />
           <SubRating
-            label="Limpeza e organização"
+            label="Limpeza e organizaÃ§Ã£o"
             options={RATING}
             value={data.limpezaOrganizacao}
             onChange={(v) => setData((p) => ({ ...p, limpezaOrganizacao: v }))}
@@ -308,14 +339,14 @@ export default function NpsForm({ filial }: { filial?: string }) {
               onClick={() => next()}
               className="w-full py-4 bg-petroleum-dark text-white font-bold rounded-2xl active:scale-95 transition-all touch-manipulation"
             >
-              Continuar →
+              Continuar â†’
             </button>
           )}
         </div>
       ),
     },
 
-    // 4 — Resultado / exame
+    // 4 â€” Resultado / exame
     {
       title: 'Sobre o resultado do seu exame:',
       content: (
@@ -328,13 +359,13 @@ export default function NpsForm({ filial }: { filial?: string }) {
           />
           <div className="space-y-2">
             <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
-              Orientações antes do exame
+              OrientaÃ§Ãµes antes do exame
             </p>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { emoji: '✅', label: 'Recebi', value: 'Sim' },
-                { emoji: '🤔', label: 'Parcialmente', value: 'Mais ou menos' },
-                { emoji: '❌', label: 'Não recebi', value: 'Não' },
+                { emoji: 'âœ…', label: 'Recebi', value: 'Sim' },
+                { emoji: 'ðŸ¤”', label: 'Parcialmente', value: 'Mais ou menos' },
+                { emoji: 'âŒ', label: 'NÃ£o recebi', value: 'NÃ£o' },
               ].map((opt) => (
                 <button
                   key={opt.value}
@@ -358,23 +389,23 @@ export default function NpsForm({ filial }: { filial?: string }) {
               onClick={() => next()}
               className="w-full py-4 bg-petroleum-dark text-white font-bold rounded-2xl active:scale-95 transition-all touch-manipulation"
             >
-              Continuar →
+              Continuar â†’
             </button>
           )}
         </div>
       ),
     },
 
-    // 5 — Custo-benefício
+    // 5 â€” Custo-benefÃ­cio
     {
-      title: 'Como você avalia o custo-benefício do laboratório?',
+      title: 'Como vocÃª avalia o custo-benefÃ­cio do laboratÃ³rio?',
       content: (
         <div className="grid grid-cols-2 gap-3">
           {[
-            { emoji: '🌟', label: 'Excelente' },
-            { emoji: '👍', label: 'Bom' },
-            { emoji: '😑', label: 'Regular' },
-            { emoji: '👎', label: 'Ruim' },
+            { emoji: 'ðŸŒŸ', label: 'Excelente' },
+            { emoji: 'ðŸ‘', label: 'Bom' },
+            { emoji: 'ðŸ˜‘', label: 'Regular' },
+            { emoji: 'ðŸ‘Ž', label: 'Ruim' },
           ].map((opt) => (
             <BigOption
               key={opt.label}
@@ -388,18 +419,18 @@ export default function NpsForm({ filial }: { filial?: string }) {
       ),
     },
 
-    // 6 — Como conheceu
+    // 6 â€” Como conheceu
     {
-      title: 'Como você conheceu o Laboratório Mais Saúde?',
+      title: 'Como vocÃª conheceu o LaboratÃ³rio Mais SaÃºde?',
       content: (
         <div className="space-y-2">
           {[
-            { emoji: '👥', label: 'Indicação de amigo/familiar', value: 'Indicação' },
-            { emoji: '👨‍⚕️', label: 'Indicação médica', value: 'Médico' },
-            { emoji: '📱', label: 'Instagram / Redes sociais', value: 'Instagram' },
-            { emoji: '🔍', label: 'Google / Internet', value: 'Google' },
-            { emoji: '🚶', label: 'Passando pela frente', value: 'Passando na frente' },
-            { emoji: '✏️', label: 'Outro', value: 'Outros' },
+            { emoji: 'ðŸ‘¥', label: 'IndicaÃ§Ã£o de amigo/familiar', value: 'IndicaÃ§Ã£o' },
+            { emoji: 'ðŸ‘¨â€âš•ï¸', label: 'IndicaÃ§Ã£o mÃ©dica', value: 'MÃ©dico' },
+            { emoji: 'ðŸ“±', label: 'Instagram / Redes sociais', value: 'Instagram' },
+            { emoji: 'ðŸ”', label: 'Google / Internet', value: 'Google' },
+            { emoji: 'ðŸš¶', label: 'Passando pela frente', value: 'Passando na frente' },
+            { emoji: 'âœï¸', label: 'Outro', value: 'Outros' },
           ].map((opt) => (
             <button
               key={opt.value}
@@ -419,7 +450,7 @@ export default function NpsForm({ filial }: { filial?: string }) {
       ),
     },
 
-    // 7 — Comentários
+    // 7 â€” ComentÃ¡rios
     {
       title: commentPrompt,
       content: (
@@ -431,6 +462,10 @@ export default function NpsForm({ filial }: { filial?: string }) {
             rows={4}
             className="w-full p-4 border-2 border-gray-200 rounded-2xl bg-gray-50 focus:border-petroleum-dark focus:bg-white outline-none transition-all resize-none text-gray-700 text-base"
           />
+          <TurnstileField action="nps_submit" siteKey={TURNSTILE_SITE_KEY} onToken={handleTurnstileToken} />
+          {submitError && (
+            <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">{submitError}</p>
+          )}
           <button
             type="button"
             onClick={handleSubmit}
@@ -438,7 +473,7 @@ export default function NpsForm({ filial }: { filial?: string }) {
             className="w-full py-4 bg-petroleum-dark text-white font-bold text-lg rounded-2xl shadow-lg active:scale-95 transition-all touch-manipulation flex items-center justify-center gap-2 disabled:opacity-70"
           >
             {isSubmitting && <Loader2 className="w-5 h-5 animate-spin" />}
-            {isSubmitting ? 'Enviando...' : 'Enviar Avaliação'}
+            {isSubmitting ? 'Enviando...' : 'Enviar AvaliaÃ§Ã£o'}
           </button>
           {!isSubmitting && (
             <button
@@ -511,3 +546,7 @@ export default function NpsForm({ filial }: { filial?: string }) {
     </div>
   );
 }
+
+
+
+
