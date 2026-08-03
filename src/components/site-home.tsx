@@ -270,6 +270,7 @@ export default function SiteHome() {
                 <li><a href="#o-que-fazemos">O que fazemos</a></li>
                 <li><a href="#onde-estamos">Onde estamos</a></li>
                 <li><Link href="/nps">NPS</Link></li>
+                <li><Link href="/login">Login</Link></li>
               </ul>
             </div>
             <div>
