@@ -1,4 +1,4 @@
-﻿'use server';
+'use server';
 
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -16,6 +16,15 @@ export interface LoginState {
   error?: string;
 }
 
+export interface PasswordRecoveryState {
+  error?: string;
+  message?: string;
+}
+
+export interface ResetPasswordState {
+  error?: string;
+}
+
 export interface MfaState {
   error?: string;
   message?: string;
@@ -28,6 +37,16 @@ export interface MfaState {
 
 function genericLoginError() {
   return { error: 'Login invalido ou verificacao de seguranca pendente.' };
+}
+
+function getPasswordRecoveryBaseUrl(headersList: Headers) {
+  const configuredOrigin = process.env.APP_ORIGIN ?? process.env.URL;
+  const requestOrigin = headersList.get('origin');
+
+  if (configuredOrigin) return configuredOrigin.replace(/\/$/, '');
+  if (process.env.NODE_ENV !== 'production' && requestOrigin) return requestOrigin.replace(/\/$/, '');
+
+  throw new Error('APP_ORIGIN ou URL nao configurado para recuperacao de senha.');
 }
 
 export async function login(_state: LoginState, formData: FormData): Promise<LoginState> {
@@ -60,6 +79,85 @@ export async function login(_state: LoginState, formData: FormData): Promise<Log
 
   if (needsMfa) redirect('/login/mfa');
   redirect('/dashboard');
+}
+
+export async function requestPasswordRecovery(
+  _state: PasswordRecoveryState,
+  formData: FormData,
+): Promise<PasswordRecoveryState> {
+  const email = String(formData.get('email') ?? '').trim().toLowerCase();
+  const turnstileToken = String(formData.get('turnstileToken') ?? '');
+  const headersList = await headers();
+  const ip = getClientIp(headersList);
+
+  const rate = checkRateLimit(`password-recovery:${ip}:${email || 'empty'}`, 3, 10 * 60 * 1000);
+  if (!rate.allowed) {
+    return { error: 'Muitas tentativas. Aguarde alguns minutos e tente novamente.' };
+  }
+
+  const turnstile = await verifyTurnstileToken(turnstileToken, 'password_recovery', headersList);
+  if (!turnstile.ok) {
+    return { error: 'Confirme a verificacao de seguranca para continuar.' };
+  }
+
+  if (!/^\S+@\S+\.\S+$/.test(email)) {
+    return { error: 'Informe um e-mail valido.' };
+  }
+
+  try {
+    const baseUrl = getPasswordRecoveryBaseUrl(headersList);
+    const redirectTo = `${baseUrl}/auth/callback?next=${encodeURIComponent('/login/reset-password')}`;
+    const supabase = await createUserServerClient();
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+
+    if (error) {
+      console.error('[password-recovery] Falha ao enviar e-mail:', error.message);
+    }
+  } catch (error) {
+    console.error('[password-recovery] Erro inesperado:', error instanceof Error ? error.message : 'erro desconhecido');
+  }
+
+  return {
+    message: 'Se este e-mail estiver cadastrado, enviaremos um link para definir uma nova senha.',
+  };
+}
+
+export async function updateRecoveredPassword(
+  _state: ResetPasswordState,
+  formData: FormData,
+): Promise<ResetPasswordState> {
+  const password = String(formData.get('password') ?? '');
+  const confirmPassword = String(formData.get('confirmPassword') ?? '');
+
+  if (password.length < 10) {
+    return { error: 'Use uma senha com pelo menos 10 caracteres.' };
+  }
+
+  if (password !== confirmPassword) {
+    return { error: 'As senhas nao conferem.' };
+  }
+
+  try {
+    const supabase = await createUserServerClient();
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+
+    if (userError || !userData.user) {
+      return { error: 'Link expirado. Solicite uma nova recuperacao de senha.' };
+    }
+
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) {
+      console.error('[reset-password] Falha ao atualizar senha:', error.message);
+      return { error: 'Nao foi possivel atualizar a senha. Solicite um novo link.' };
+    }
+
+    await supabase.auth.signOut({ scope: 'local' });
+  } catch (error) {
+    console.error('[reset-password] Erro inesperado:', error instanceof Error ? error.message : 'erro desconhecido');
+    return { error: 'Nao foi possivel atualizar a senha. Solicite um novo link.' };
+  }
+
+  redirect('/login?reset=success');
 }
 
 export async function prepareMfa(state: MfaState, formData: FormData): Promise<MfaState> {
@@ -139,5 +237,3 @@ export async function logout() {
 
   redirect('/login');
 }
-
-

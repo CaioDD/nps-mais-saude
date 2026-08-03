@@ -9,7 +9,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ reset?: string; auth?: string }>;
+}) {
+  const params = await searchParams;
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <section className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-6 py-12">
@@ -21,6 +27,16 @@ export default function LoginPage() {
           </p>
         </div>
         <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          {params?.reset === 'success' && (
+            <p className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-800">
+              Senha atualizada com sucesso. Entre novamente para acessar o painel.
+            </p>
+          )}
+          {params?.auth === 'invalid' && (
+            <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
+              Link invalido ou expirado. Solicite uma nova recuperacao de senha.
+            </p>
+          )}
           <LoginForm />
         </div>
       </section>

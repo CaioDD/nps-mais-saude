@@ -1,4 +1,4 @@
-﻿import type { NextConfig } from 'next';
+import type { NextConfig } from 'next';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -44,6 +44,10 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/dashboard/:path*',
+        headers: privateHeaders,
+      },
+      {
+        source: '/auth/:path*',
         headers: privateHeaders,
       },
       {
