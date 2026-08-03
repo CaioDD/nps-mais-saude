@@ -9,7 +9,6 @@ import {
   getClientIp,
   signInWithPassword,
   signOutCurrentUser,
-  verifyTurnstileToken,
 } from '@/lib/supabase-server';
 
 export interface LoginState {
@@ -52,15 +51,12 @@ function getPasswordRecoveryBaseUrl(headersList: Headers) {
 export async function login(_state: LoginState, formData: FormData): Promise<LoginState> {
   const email = String(formData.get('email') ?? '').trim().toLowerCase();
   const password = String(formData.get('password') ?? '');
-  const turnstileToken = String(formData.get('turnstileToken') ?? '');
   const headersList = await headers();
   const ip = getClientIp(headersList);
 
   const rate = checkRateLimit(`login:${ip}`, 10, 60 * 1000);
   if (!rate.allowed) return { error: 'Muitas tentativas. Aguarde um minuto e tente novamente.' };
 
-  const turnstile = await verifyTurnstileToken(turnstileToken, 'login', headersList);
-  if (!turnstile.ok) return genericLoginError();
 
   if (!email || !password) {
     return { error: 'Informe e-mail e senha.' };
