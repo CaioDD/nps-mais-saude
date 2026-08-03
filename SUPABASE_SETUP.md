@@ -1,4 +1,4 @@
-﻿# Configuracao Supabase multiempresa para o NPS
+# Configuracao Supabase multiempresa para o NPS
 
 ## Projeto atual
 
@@ -43,11 +43,19 @@ NPS_DEFAULT_SURVEY_SLUG=atendimento
 
 Antes de apontar o dominio oficial, configure Turnstile na Cloudflare e cadastre `www.maissaudelab.com.br` como hostname permitido. Enquanto estiver testando na URL temporaria, adicione tambem o hostname Netlify no Turnstile ou use `APP_ORIGIN` com a URL temporaria.
 
-## RLS e MFA
+## RLS e acesso ao dashboard
 
-As policies usam membership por organizacao e exigem sessao `aal2` com token recente. Na pratica, o usuario precisa entrar com senha e concluir TOTP em `/login/mfa` antes de acessar `/dashboard`.
+As policies usam membership por organizacao e token autenticado recente. O usuario precisa estar cadastrado no Supabase Auth e vinculado em `organization_members` para visualizar dados da organizacao.
 
 No Supabase Auth, desative cadastro publico e cadastre usuarios administrativamente. A senha temporaria do Renan deve ser rotacionada antes de liberar ao cliente.
+
+## Fase futura de seguranca
+
+Depois da apresentacao e antes de uso operacional amplo, reativar os controles adicionais:
+
+- MFA/TOTP no dashboard, exigindo sessao `aal2` nas policies.
+- Turnstile no login e na recuperacao de senha.
+- Teste completo do fluxo de login, MFA, recuperacao de senha e cookies em producao.
 
 ## Criar nova organizacao futuramente
 
@@ -72,7 +80,7 @@ A chave privada age deve ficar fora do GitHub, em gerenciador de senhas e copia 
 - Aplicar `supabase/migrations/002_harden_nps_security.sql`.
 - Rodar Supabase Advisors.
 - Configurar Turnstile e variaveis Netlify Production.
-- Rotacionar senha temporaria do Renan e concluir MFA.
+- Rotacionar senha temporaria do Renan.
 - Testar envio NPS real e verificar no Supabase.
-- Testar que usuario sem membership ou sem AAL2 nao acessa dashboard.
+- Testar que usuario sem membership nao acessa dashboard.
 - Fazer restore inicial do backup criptografado.

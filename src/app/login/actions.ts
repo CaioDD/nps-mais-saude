@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation';
 import { checkRateLimit } from '@/lib/rate-limit';
 import {
   createUserServerClient,
-  getAuthenticatorAssuranceLevel,
   getClientIp,
   signInWithPassword,
   signOutCurrentUser,
@@ -62,18 +61,13 @@ export async function login(_state: LoginState, formData: FormData): Promise<Log
     return { error: 'Informe e-mail e senha.' };
   }
 
-  let needsMfa = false;
-
   try {
     await signInWithPassword(email, password);
-    const assurance = await getAuthenticatorAssuranceLevel();
-    needsMfa = assurance.currentLevel !== 'aal2';
   } catch (error) {
     console.error('[login] Falha ao autenticar:', error instanceof Error ? error.message : 'erro desconhecido');
     return genericLoginError();
   }
 
-  if (needsMfa) redirect('/login/mfa');
   redirect('/dashboard');
 }
 

@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import {
@@ -13,7 +13,6 @@ import {
 import { logout } from '@/app/login/actions';
 import {
   createUserServerClient,
-  getAuthenticatorAssuranceLevel,
   getAuthUser,
   listNpsResponses,
   listSurveyBranches,
@@ -94,20 +93,13 @@ export default async function DashboardPage({
   let user: Awaited<ReturnType<typeof getAuthUser>> | null = null;
   let organizations: Awaited<ReturnType<typeof listUserOrganizations>> = [];
 
-  let needsMfa = false;
-
   try {
-    const assurance = await getAuthenticatorAssuranceLevel();
-    needsMfa = assurance.currentLevel !== 'aal2';
-    if (!needsMfa) {
-      [user, organizations] = await Promise.all([getAuthUser(supabase), listUserOrganizations(supabase)]);
-    }
+    [user, organizations] = await Promise.all([getAuthUser(supabase), listUserOrganizations(supabase)]);
   } catch (error) {
     console.error('[dashboard] Sessao invalida ou erro ao carregar organizacoes:', error);
     redirect('/login');
   }
 
-  if (needsMfa) redirect('/login/mfa');
   if (!user) redirect('/login');
 
   if (!organizations.length) {
@@ -433,8 +425,3 @@ function ScoreBar({ label, value, total, color }: { label: string; value: number
     </div>
   );
 }
-
-
-
-
-
