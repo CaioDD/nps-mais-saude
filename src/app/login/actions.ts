@@ -209,9 +209,21 @@ export async function verifyMfa(_state: MfaState, formData: FormData): Promise<M
   }
 
   const supabase = await createUserServerClient();
-  const { error } = await supabase.auth.mfa.verify({ factorId, challengeId, code });
+  const { data, error } = await supabase.auth.mfa.verify({ factorId, challengeId, code });
   if (error) {
     return { error: 'Codigo invalido ou expirado. Gere um novo desafio.', factorId };
+  }
+
+  if ('access_token' in data && 'refresh_token' in data) {
+    const { error: sessionError } = await supabase.auth.setSession({
+      access_token: data.access_token,
+      refresh_token: data.refresh_token,
+    });
+
+    if (sessionError) {
+      console.error('[mfa] Falha ao atualizar sessao AAL2:', sessionError.message);
+      return { error: 'Sessao verificada, mas nao foi possivel abrir o painel. Entre novamente.', factorId };
+    }
   }
 
   redirect('/dashboard');
