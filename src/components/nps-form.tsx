@@ -43,10 +43,12 @@ function npsClass(n: number, selected: boolean) {
 }
 
 function BigOption({
+  emoji,
   label,
   selected,
   onClick,
 }: {
+  emoji: string;
   label: string;
   selected: boolean;
   onClick: () => void;
@@ -55,12 +57,13 @@ function BigOption({
     <button
       type="button"
       onClick={onClick}
-      className={`flex items-center justify-center p-4 border-2 rounded-2xl transition-all duration-150 min-h-[84px] w-full font-semibold text-sm active:scale-95 touch-manipulation select-none ${
+      className={`flex flex-col items-center justify-center gap-2 p-4 border-2 rounded-2xl transition-all duration-150 min-h-[84px] w-full font-medium text-sm active:scale-95 touch-manipulation select-none ${
         selected
           ? 'border-petroleum-dark bg-petroleum-dark text-white shadow-lg'
           : 'border-gray-200 bg-white text-gray-700 hover:border-petroleum-dark/50'
       }`}
     >
+      <span className="text-3xl leading-none" aria-hidden="true">{emoji}</span>
       <span>{label}</span>
     </button>
   );
@@ -73,7 +76,7 @@ function SubRating({
   onChange,
 }: {
   label: string;
-  options: { label: string; value: string }[];
+  options: { emoji: string; label: string; value: string }[];
   value: string;
   onChange: (v: string) => void;
 }) {
@@ -86,12 +89,13 @@ function SubRating({
             key={opt.value}
             type="button"
             onClick={() => onChange(opt.value)}
-            className={`flex items-center justify-center p-2 border-2 rounded-xl transition-all active:scale-95 touch-manipulation min-h-[62px] select-none ${
+            className={`flex flex-col items-center justify-center gap-1 p-2 border-2 rounded-xl transition-all active:scale-95 touch-manipulation min-h-[62px] select-none ${
               value === opt.value
                 ? 'border-petroleum-dark bg-petroleum-dark text-white shadow-md'
                 : 'border-gray-200 bg-white text-gray-600 hover:border-petroleum-dark/30'
             }`}
           >
+            <span className="text-lg leading-none" aria-hidden="true">{opt.emoji}</span>
             <span className="text-[10px] font-semibold text-center leading-tight">{opt.label}</span>
           </button>
         ))}
@@ -101,17 +105,17 @@ function SubRating({
 }
 
 const RATING = [
-  { label: 'Excelente', value: 'Excelente' },
-  { label: 'Bom', value: 'Bom' },
-  { label: 'Regular', value: 'Regular' },
-  { label: 'Ruim', value: 'Ruim' },
+  { emoji: '😍', label: 'Excelente', value: 'Excelente' },
+  { emoji: '😊', label: 'Bom', value: 'Bom' },
+  { emoji: '😐', label: 'Regular', value: 'Regular' },
+  { emoji: '😞', label: 'Ruim', value: 'Ruim' },
 ];
 
 const SPEED = [
-  { label: 'Muito rapido', value: 'Muito rapido' },
-  { label: 'Adequado', value: 'Adequado' },
-  { label: 'Demorado', value: 'Demorado' },
-  { label: 'Muito demorado', value: 'Muito demorado' },
+  { emoji: '⚡', label: 'Muito rapido', value: 'Muito rapido' },
+  { emoji: '✅', label: 'Adequado', value: 'Adequado' },
+  { emoji: '🐢', label: 'Demorado', value: 'Demorado' },
+  { emoji: '🐌', label: 'Muito demorado', value: 'Muito demorado' },
 ];
 
 export default function NpsForm({ filial }: { filial?: string }) {
@@ -191,7 +195,7 @@ export default function NpsForm({ filial }: { filial?: string }) {
         </div>
         <div className="space-y-2">
           <h2 className="text-2xl font-black text-petroleum-dark">
-            {isPromoter ? 'Muito obrigado!' : 'Obrigado pelo feedback!'}
+            {isPromoter ? 'Muito obrigado! 🎉' : 'Obrigado pelo feedback!'}
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto">
             {isPromoter
@@ -211,7 +215,7 @@ export default function NpsForm({ filial }: { filial?: string }) {
 
   const commentPrompt =
     data.nps !== null && data.nps >= 9
-      ? 'O que voce mais gostou?'
+      ? 'O que voce mais gostou? 😊'
       : data.nps !== null && data.nps >= 7
       ? 'Como podemos melhorar sua experiencia?'
       : 'O que podemos fazer para melhorar?';
@@ -229,8 +233,8 @@ export default function NpsForm({ filial }: { filial?: string }) {
             ))}
           </div>
           <div className="flex justify-between text-xs text-gray-400 font-semibold px-0.5">
-            <span>Nao indicaria</span>
-            <span>Com certeza</span>
+            <span>😞 Nao indicaria</span>
+            <span>Com certeza 😍</span>
           </div>
         </div>
       ),
@@ -239,12 +243,18 @@ export default function NpsForm({ filial }: { filial?: string }) {
       title: 'De forma geral, como foi sua experiencia no laboratorio hoje?',
       content: (
         <div className="grid grid-cols-2 gap-3">
-          {['Excelente', 'Boa', 'Regular', 'Ruim'].map((label) => (
+          {[
+            { emoji: '😍', label: 'Excelente' },
+            { emoji: '😊', label: 'Boa' },
+            { emoji: '😐', label: 'Regular' },
+            { emoji: '😞', label: 'Ruim' },
+          ].map((opt) => (
             <BigOption
-              key={label}
-              label={label}
-              selected={data.experienciaGeral === label}
-              onClick={() => autoNext({ experienciaGeral: label })}
+              key={opt.label}
+              emoji={opt.emoji}
+              label={opt.label}
+              selected={data.experienciaGeral === opt.label}
+              onClick={() => autoNext({ experienciaGeral: opt.label })}
             />
           ))}
         </div>
@@ -312,20 +322,21 @@ export default function NpsForm({ filial }: { filial?: string }) {
             <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Orientacoes antes do exame</p>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { label: 'Recebi', value: 'Sim' },
-                { label: 'Parcialmente', value: 'Mais ou menos' },
-                { label: 'Nao recebi', value: 'Nao' },
+                { emoji: '✅', label: 'Recebi', value: 'Sim' },
+                { emoji: '🤔', label: 'Parcialmente', value: 'Mais ou menos' },
+                { emoji: '❌', label: 'Nao recebi', value: 'Nao' },
               ].map((opt) => (
                 <button
                   key={opt.value}
                   type="button"
                   onClick={() => setData((p) => ({ ...p, recebeuOrientacoes: opt.value }))}
-                  className={`flex items-center justify-center p-3 border-2 rounded-xl transition-all active:scale-95 touch-manipulation min-h-[68px] select-none ${
+                  className={`flex flex-col items-center justify-center gap-1.5 p-3 border-2 rounded-xl transition-all active:scale-95 touch-manipulation min-h-[68px] select-none ${
                     data.recebeuOrientacoes === opt.value
                       ? 'border-petroleum-dark bg-petroleum-dark text-white shadow-md'
                       : 'border-gray-200 bg-white text-gray-600 hover:border-petroleum-dark/30'
                   }`}
                 >
+                  <span className="text-xl" aria-hidden="true">{opt.emoji}</span>
                   <span className="text-xs font-semibold text-center leading-tight">{opt.label}</span>
                 </button>
               ))}
@@ -343,12 +354,18 @@ export default function NpsForm({ filial }: { filial?: string }) {
       title: 'Como voce avalia o custo-beneficio do laboratorio?',
       content: (
         <div className="grid grid-cols-2 gap-3">
-          {['Excelente', 'Bom', 'Regular', 'Ruim'].map((label) => (
+          {[
+            { emoji: '🌟', label: 'Excelente' },
+            { emoji: '👍', label: 'Bom' },
+            { emoji: '😑', label: 'Regular' },
+            { emoji: '👎', label: 'Ruim' },
+          ].map((opt) => (
             <BigOption
-              key={label}
-              label={label}
-              selected={data.custoBeneficio === label}
-              onClick={() => autoNext({ custoBeneficio: label })}
+              key={opt.label}
+              emoji={opt.emoji}
+              label={opt.label}
+              selected={data.custoBeneficio === opt.label}
+              onClick={() => autoNext({ custoBeneficio: opt.label })}
             />
           ))}
         </div>
@@ -359,23 +376,24 @@ export default function NpsForm({ filial }: { filial?: string }) {
       content: (
         <div className="space-y-2">
           {[
-            { label: 'Indicacao de amigo/familiar', value: 'Indicacao' },
-            { label: 'Indicacao medica', value: 'Medico' },
-            { label: 'Instagram / Redes sociais', value: 'Instagram' },
-            { label: 'Google / Internet', value: 'Google' },
-            { label: 'Passando pela frente', value: 'Passando na frente' },
-            { label: 'Outro', value: 'Outros' },
+            { emoji: '👥', label: 'Indicacao de amigo/familiar', value: 'Indicacao' },
+            { emoji: '👨‍⚕️', label: 'Indicacao medica', value: 'Medico' },
+            { emoji: '📱', label: 'Instagram / Redes sociais', value: 'Instagram' },
+            { emoji: '🔍', label: 'Google / Internet', value: 'Google' },
+            { emoji: '🚶', label: 'Passando pela frente', value: 'Passando na frente' },
+            { emoji: '✏️', label: 'Outro', value: 'Outros' },
           ].map((opt) => (
             <button
               key={opt.value}
               type="button"
               onClick={() => autoNext({ comoConheceu: opt.value })}
-              className={`w-full flex items-center px-4 py-3.5 border-2 rounded-2xl transition-all duration-150 active:scale-[0.98] touch-manipulation select-none ${
+              className={`w-full flex items-center gap-4 px-4 py-3.5 border-2 rounded-2xl transition-all duration-150 active:scale-[0.98] touch-manipulation select-none ${
                 data.comoConheceu === opt.value
                   ? 'border-petroleum-dark bg-petroleum-dark text-white shadow-md'
                   : 'border-gray-200 bg-white text-gray-700 hover:border-petroleum-dark/40'
               }`}
             >
+              <span className="text-2xl" aria-hidden="true">{opt.emoji}</span>
               <span className="font-medium">{opt.label}</span>
             </button>
           ))}
